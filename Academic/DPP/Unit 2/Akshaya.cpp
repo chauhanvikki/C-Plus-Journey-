@@ -1,38 +1,63 @@
-
 #include <iostream>
+#include <vector>
 
-void findMinTemperature(void* data, int size) {
-        if (size <= 0) {
-        std::cout << "Invalid size" << std::endl;
-            return;
+using namespace std;
+
+void findIntersection(int* arr1, int size1, int* arr2, int size2, int& sizeIntersection, int* intersection) {
+    vector<int> commonIds;
+
+    int i = 0, j = 0;
+
+    while (i < size1 && j < size2) {
+        if (arr1[i] == arr2[j]) {
+            commonIds.push_back(arr1[i]);
+            i++;
+            j++;
+        } else if (arr1[i] < arr2[j]) {
+            i++;
+        } else {
+            j++;
         }
-        
-double* temperatures = static_cast<double*>(data);
-double minTemperature = temperatures[0];
-                
-        for (int i = 1; i < size; ++i) {
-        if (temperatures[i] < minTemperature) {
-            minTemperature = temperatures[i];
     }
-                    }
-                    
-        std::cout << minTemperature << std::endl;
+
+    sizeIntersection = commonIds.size();
+
+    if (sizeIntersection == 0) {
+        cout << "No common IDs found." << endl;
+    } else {
+        for (int i = 0; i < sizeIntersection; ++i) {
+            intersection[i] = commonIds[i];
+        }
+    }
 }
 
 int main() {
-int size;
-    std::cin >> size;
-    if (size < 0 || size > 100) {
-    std::cout << "Invalid size" << std::endl;
-    return 0;
-                }
-                
-double temperatures[size];
-    for (int i = 0; i < size; ++i) {
-    std::cin >> temperatures[i];
+    int size1, size2;
+    cin >> size1;
+    int arr1[size1];
+
+    for (int i = 0; i < size1; ++i) {
+        cin >> arr1[i];
     }
-    findMinTemperature(temperatures, size);
+
+    cin >> size2;
+    int arr2[size2];
+
+    for (int i = 0; i < size2; ++i) {
+        cin >> arr2[i];
+    }
+
+    int sizeIntersection;
+    int intersection[max(size1, size2)]; // Assuming the maximum possible size
+
+    findIntersection(arr1, size1, arr2, size2, sizeIntersection, intersection);
+
+    if (sizeIntersection > 0) {
+        for (int i = 0; i < sizeIntersection; ++i) {
+            cout << intersection[i] << " ";
+        }
+        cout << endl;
+    }
+
     return 0;
 }
-
-//Sushant
